@@ -5,12 +5,12 @@
 @Description:  test_pyshor.py provides functions and classes to ensure the proper functioning of PyShor
 @Author: Quentin Delamea
 @Copyright: Copyright 2020, PyShor
-@Credits: [Quentin Delamea]
+
 @License: MIT
 @Version: 0.0.1
-@Maintainer: Quentin Delamea
-@Email: qdelamea@gmail.com
-@Status: Dev
+@Maintainer: nobody
+
+@Status: Stopped
 """
 
 import random as rd

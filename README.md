@@ -2,7 +2,7 @@
 
 This project provides a **Python** implementation of Shor's algorithm using Atos myQLM quantum library ([see here](https://atos.net/en/2019/press-release_2019_05_16/atos-launches-myqlm-to-democratize-quantum-programming-for-researchers-students-and-developers-worldwide)).
 
-This project is in development. There are some problem with the function to perform the primality test.
+**The project was abandoned due to lack of access to a computer powerful enough to debug effectively**
 
 ## Installation
 
@@ -38,8 +38,8 @@ PyShor is a module that you can import in your own code. This module provides on
     from pyshor import factor_int
     
     # Obtain a non trivail factor of an integer
-    factor = factor_int(61)
-    print(factor) # Output  $ 
+    factor = find_divisor(15)
+    print(factor) # Output : 3 or 5 
 
 ## Project Basis
 

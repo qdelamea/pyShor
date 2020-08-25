@@ -5,12 +5,12 @@
 @Description:  classical.py provides classical algorithm required to reduce factoring problem to period finding problem
 @Author: Quentin Delamea
 @Copyright: Copyright 2020, PyShor
-@Credits: [Quentin Delamea]
+
 @License: MIT
 @Version: 0.0.1
-@Maintainer: Quentin Delamea
-@Email: qdelamea@gmail.com
-@Status: Dev
+@Maintainer: nobody
+
+@Status: Stopped
 """
 
 # Standard lib imports
@@ -20,77 +20,39 @@ import random as rd
 import numpy as np
 
 
-def _miller_test(n: int, d: int) -> bool:
-    # Pick a random number a in range [2, n - 2]
-    a = rd.randrange(2, n - 1)
-    x = np.power(a, d) % n
-
-    if x == 1 or x == n - 1:
-        return True
-
-    while d != n - 1:
-        x = np.power(x, 2) % n
-        print(x)
-        if x == 1:
-            return False
-        elif x == n - 1:
-            return True
-
-
-def is_prime_number(n: int, k: int = 40) -> bool:
+def is_prime_number(n: int, t: int = 100) -> bool:
     """
     Performs the primarily test using Miller-Rabin's algorithm.
-    See: https://gist.github.com/Ayrx/5884790
+    See: https://github.com/sylhare/nprime/blob/master/nprime/pyprime.py
 
     :param n: (int) number on which the test is performed
-    :param k: (int) number of round, by default equal to 40 the optimal number
+    :param t: (int) number of round, by default equal to 100 the optimal number
 
     :return: (bool) True if n is a prime number, False otherwise
     """
+    if n == 2:
+        prime = True  # To normalize and make the algorythm works with 2
+    else:
+        prime = False  # All other even number will output false
 
-    # Miller-Robina's test handle odd integer greater than three.
-    if not isinstance(n, int):
-        raise TypeError('the argument passed to the function must be an integer')
-    elif n < 0:
-        raise ValueError('number must be a positive integer')
-    elif n <= 1:
-        return False
-    elif n == 2:
-        return True
-    if n % 2 == 0:
-        return False
-
-    # Now we can perform the Miller-Robina's test
-    # We find r and d such as n = 2^r * d + 1 with d an odd integer
-    r = 0
+    # Step 1: Have n-1 = 2^s * m (with m odd, and s number of twos factored)
     d = n - 1
+    s = 0
     while d % 2 == 0:
-        r += 1
-        d //= 2
+        d //= 2  # d equals to quotient of d divided 2
+        s += 1  # s > 1 when n is odd
 
-    # Witness loop
-    for _ in range(k):
+    for _ in range(0, t):
+        #  Step 2: test (a^d)^2^r ≡ 1 mod n for all r
+        a = rd.randrange(1, n)
+        for _ in range(0, s):
+            x = pow(a, d * pow(2, s), n)
+            if x == 1 or x == -1:
+                prime = True  # Should be true for all a
+            else:
+                return False  # When not true, it's not prime for sure
 
-        if not _miller_test(n, d):
-            return False
-
-    return True
-
-    #     # Now we perform the Miller's test
-    #
-    #     # Pick a number in [2, n - 2]
-    #     a = rd.randrange(2, n - 1)
-    #     x = np.power(a, d) % n
-    #
-    #     if x == 1 or x == n - 1:
-    #         return True
-    #
-    #     # Repeat r - 1 times
-    #     for _ in range(r - 1):
-    #         x = np.power(x, 2) % n
-    #         if x == n - 1:
-    #             return True
-    # return False
+    return prime  # /!\ Probable prime
 
 
 class NotPrimerPowerException(Exception):
@@ -150,10 +112,6 @@ def continued_fraction_expansion(n: int, b: int, q: int) -> int:
 
     # Initialize the float whose fractional expansion is looking for
     x = b/q
-    print('n : ', n)
-    print('b : ', b)
-    print('q : ', q)
-    print('x : ', x)
 
     # Compute the two first value of the expansion
     a_seq = [int(np.trunc(x))]
@@ -172,10 +130,6 @@ def continued_fraction_expansion(n: int, b: int, q: int) -> int:
 
     # Continue the expansion until the period i
     while q_seq[-1] < n:
-        print('a_seq : ', a_seq)
-        print('x : ', x)
-        print('p_seq : ', p_seq)
-        print('q_seq : ', q_seq)
         a_seq.append(int(np.trunc(x)))
         p_seq.append(a_seq[-1] * p_seq[-1] + p_seq[-2])
         q_seq.append(a_seq[-1] * q_seq[-1] + q_seq[-2])

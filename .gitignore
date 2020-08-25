@@ -1,4 +1,6 @@
 /.idea
+/.pytest_cache
 /venv
 /build
 /dist
+/pyshor.egg-info

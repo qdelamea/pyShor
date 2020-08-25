@@ -6,12 +6,12 @@
                For more details see : https://arxiv.org/abs/1907.09415
 @Author: Quentin Delamea
 @Copyright: Copyright 2020, PyShor
-@Credits: [Quentin Delamea]
+
 @License: MIT
 @Version: 0.0.1
-@Maintainer: Quentin Delamea
-@Email: qdelamea@gmail.com
-@Status: Dev
+@Maintainer: nobody
+
+@Status: Stopped
 """
 
 # Standard lib imports
@@ -54,7 +54,6 @@ def find_divisor(n: int) -> int:
         while True:
             x = rd.choice(x_set)
             x_set.remove(x)
-            print('Random number : ', x)
 
             # If gcd(x, n) != 1 then we find a non trivial divisor of n
             if gcd(x, n) > 1:
@@ -124,8 +123,3 @@ def prime_factorize(n: int) -> List[Tuple[int, int]]:
     else:
         divisor = find_divisor(n)
         return _clean([(divisor, 1)] + prime_factorize(n // divisor))
-
-
-# while True:
-#     n = int(input('Number : '))
-#     print('Factorization : ', find_divisor(n))

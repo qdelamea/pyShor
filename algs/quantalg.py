@@ -5,12 +5,12 @@
 @Description:  quantum.py provides quantum materials to perform period finding research algorithm
 @Author: Quentin Delamea
 @Copyright: Copyright 2020, PyShor
-@Credits: [Quentin Delamea]
+
 @License: MIT
 @Version: 0.0.1
-@Maintainer: Quentin Delamea
-@Email: qdelamea@gmail.com
-@Status: Dev
+@Maintainer: nobody
+
+@Status: Stopped
 """
 
 # External libs imports
@@ -87,17 +87,13 @@ def period_finder(n: int, x: int) -> int:
         # If the period found by Shor's quantum algorithm is wrong then an exception is raised
         try:
             # Submit the job and retrieve the result
-            print('Job submitted')
             measure = qpu.submit(job)
 
             # Extract the period from the measurement
             r = continued_fraction_expansion(n, measure.raw_data[0].state.int, int(np.trunc(np.log2(n ** 2))) + 1)
-            print('State : ', measure.raw_data[0].state.int)
-            print('Period : ', r)
 
             # Check the period is valid
             if x ** r % n == 1:
-                print('Invalid period')
                 return r
 
         # A ValueError exception has been caught which means the period is not extractable from the previous measurement
